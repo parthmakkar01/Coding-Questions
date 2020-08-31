@@ -1,0 +1,99 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    struct ListNode * rev(struct ListNode * start , struct ListNode *limit)
+{
+	if(start->next==NULL)
+		return start;
+		
+	struct ListNode * p =start, * q,*s;
+	q=p->next;
+	p->next=NULL;
+	
+	//cout<<"\np->"<<p->val<<endl;
+	while(q!=limit)
+	{
+		s=q->next;
+		q->next=p;
+		p=q;
+		q=s;
+	}
+	//start=p;
+	return p;
+	
+}
+
+void reverse(struct ListNode **start,int k)
+{
+	struct ListNode * p , * q = *start, * l  , * s1 =NULL , *s2;
+	while(q!=NULL)
+	{	int k1=k;
+	//	cout<<"Dd";
+		while(k1>0 && q!=NULL && q->next)
+		{
+			//p=q;
+			q=q->next;
+			k1=k1-1;
+		}
+		
+		//cout<<"\nk--"<<k1<<"qqq: "<<q->val<<endl;
+		
+		if(s1==NULL)
+		{
+			if(q==NULL)
+				s1=rev(*start , NULL);
+			else
+				s1=rev(*start , q);
+			//cout<<"s1:"<<s1->val<<endl;
+			s2=s1;
+			l=*start;
+			p=q;
+			
+		}
+		else
+		{
+			//cout<<"k1"<<k1<<endl;
+			if(k1!=0 )
+			{
+			//	cout<<"ld:"<<l->val<<endl;
+				l->next=rev(p,NULL);	
+				break;	
+			}
+			else
+				l->next=rev(p,q);
+				
+				
+			//cout<<"l:"<<l->val<<endl;
+			l=p;
+			//cout<<"l:"<<l->val<<endl;
+			p=q;
+			//cout<<"pin:"<<p->val<<endl;
+		}
+	}
+	*start=s2;
+}
+
+    ListNode* swapPairs(ListNode* head) {
+        if(head==NULL || head->next==NULL)
+                return head;
+        if(head->next->next==NULL)
+        {
+            int temp=head->val;
+            head->val=head->next->val;
+            head->next->val=temp;
+            return head;
+        }
+            
+        reverse(&head,2);
+        return head;
+    }
+};
