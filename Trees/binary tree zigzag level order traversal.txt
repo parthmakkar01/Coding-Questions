@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int height(TreeNode *p)
+    {
+        if(p==NULL)
+            return 0;
+        return max(height(p->left) , height(p->right))+1;
+    }
+    
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+    
+            if(root==NULL)
+                return {};
+            stack<TreeNode * > s1;
+            stack<TreeNode *>s2;
+        int z=height(root);
+            vector<vector<int> >v(z);
+        
+            s1.push(root);
+        int i=0;
+            while(!s1.empty() || !s2.empty() )
+            {
+                TreeNode * p;
+                while(!s1.empty())
+                {
+                    p=s1.top(); s1.pop();
+                    v[i].push_back(p->val);
+                    if(p->left!=NULL)
+                        s2.push(p->left);
+                    if(p->right!=NULL)
+                        s2.push(p->right);
+                }
+                
+                i++;
+                
+                while(!s2.empty())
+                {
+                    p=s2.top(); s2.pop();
+                    v[i].push_back(p->val);
+                    if(p->right!=NULL)
+                        s1.push(p->right);
+                    if(p->left!=NULL)
+                        s1.push(p->left);
+                }
+                i++;
+            }
+        return v;
+    }
+};
